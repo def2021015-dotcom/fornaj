@@ -94,10 +94,10 @@
     .gallery-header{text-align:center;}
     .gallery-header h2{font-family:var(--font-display);font-size:var(--text-2xl);font-style:italic;font-weight:400;color:var(--color-text);}
     .gallery-header p{color:var(--color-text-muted);font-size:var(--text-sm);margin-top:var(--space-2);}
-    .slideshow-container{width:100%;max-width:860px;position:relative;}
-    .slideshow-track-wrapper{overflow:hidden;border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);position:relative;}
-    .slideshow-track{display:flex;width:1000%;transition:transform .9s cubic-bezier(0.16,1,0.3,1);}
-    .slide{width:10%;height:420px;flex-shrink:0;position:relative;overflow:hidden;border-radius:var(--radius-xl);}
+    .slideshow-container{width:100%;max-width:860px;position:relative;height:500px;}
+    .slideshow-track-wrapper{overflow:hidden;border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);position:relative;height:100%;}
+    .slideshow-track{display:flex;width:1000%;height:100%;transition:transform .9s cubic-bezier(0.16,1,0.3,1);}
+.slide{width:10%;height:100%;flex-shrink:0;position:relative;overflow:hidden;border-radius:var(--radius-xl);}
     .slide img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
     .slide-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);background:var(--color-surface-2);border:2px dashed var(--color-border);}
     .slide-placeholder-icon{font-size:2.5rem;opacity:.4;}
@@ -114,7 +114,7 @@
     .slide-btn-prev:hover,.slide-btn-next:hover{transform:translateY(-50%) scale(1.05);}
     .slide-btn-prev:active,.slide-btn-next:active{transform:translateY(-50%) scale(0.97);}
     .gallery-back-btn{display:flex;justify-content:center;}
-    @media(max-width:600px){.slide{height:320px;}}
+   @media(max-width:600px){.letter-box{padding:var(--space-8) var(--space-6);}.card{padding:var(--space-6);}.slide-btn-prev{left:var(--space-2);}.slide-btn-next{right:var(--space-2);}.slideshow-container{height:320px;}}
   </style>
 </head>
 <body>
