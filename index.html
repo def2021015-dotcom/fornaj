@@ -1,66 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Letter for Najel by Luthfi</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-  </head>
-  <body
-    style="
-      background-image: url(https://images.unsplash.com/photo-1607457561901-e6ec3a6d16cf?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
-    "
-    class="flex justify-center h-screen items-center"
-  >
-    <div
-      class="bg-white border px-10 py-8 border-4 border-white-300 shadow-lg shadow-white-300 rounded-xl text-center animate__animated animate__backInDown m-8 w-80 text-pink-500"
-      id="kartu"
-    >
-      <h1 class="text-3xl">Happy Birthday</h1>
-      <h1
-        class="text-4xl text-pink-500 font-bold animate__animated animate__pulse animate__infinite"
-      >
-        Najelll :3
-      </h1>
-      <button
-        class="p-2 bg-pink-600 text-white rounded mt-5 hover:bg-pink-900 transition ease-in w-full animate__animated animate__delay-1s animate__tada"
-        onclick="ubahKartu()"
-      >
-        Baca suratnya di sini yaaa
-      </button>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>From Me to You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', 'Helvetica Neue', sans-serif;
+      --text-xs:   clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl:  clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;
+      --space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;
+      --space-8:2rem;--space-10:2.5rem;--space-12:3rem;
+      --space-16:4rem;--space-20:5rem;
+      --radius-sm:.375rem;--radius-md:.5rem;
+      --radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+      --transition-interactive:180ms cubic-bezier(0.16,1,0.3,1);
+      --color-bg:#fff8f9;
+      --color-surface:#fff0f3;
+      --color-surface-2:#ffe4ea;
+      --color-surface-offset:#ffd6df;
+      --color-border:#f5c0cc;
+      --color-divider:#fad0d9;
+      --color-text:#3a1a22;
+      --color-text-muted:#8c5162;
+      --color-text-faint:#c9929f;
+      --color-text-inverse:#fff8f9;
+      --color-primary:#d64d72;
+      --color-primary-hover:#b83a5c;
+      --color-primary-active:#9a2849;
+      --color-primary-highlight:#fce8ed;
+      --shadow-sm:0 1px 4px oklch(0.45 0.08 0/.08);
+      --shadow-md:0 4px 16px oklch(0.45 0.08 0/.12);
+      --shadow-lg:0 12px 40px oklch(0.45 0.08 0/.16);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;text-rendering:optimizeLegibility;}
+    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background-color:var(--color-bg);line-height:1.6;}
+    img{display:block;max-width:100%;height:auto;}
+    button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
+    h1,h2,h3{text-wrap:balance;line-height:1.15;}
+    p{text-wrap:pretty;}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+    body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 20% 20%,oklch(0.85 0.06 0/.25) 0%,transparent 50%),radial-gradient(circle at 80% 80%,oklch(0.88 0.04 340/.2) 0%,transparent 50%);pointer-events:none;z-index:0;}
+    .page{display:none;min-height:100dvh;opacity:0;transition:opacity .4s cubic-bezier(0.16,1,0.3,1);}
+    .page.active{display:flex;flex-direction:column;}
+    .page.visible{opacity:1;}
+    .btn{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-8);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:500;letter-spacing:.03em;transition:background var(--transition-interactive),color var(--transition-interactive),box-shadow var(--transition-interactive),transform var(--transition-interactive),border-color var(--transition-interactive);}
+    .btn-primary{background:var(--color-primary);color:var(--color-text-inverse);border:1.5px solid var(--color-primary);}
+    .btn-primary:hover{background:var(--color-primary-hover);border-color:var(--color-primary-hover);box-shadow:var(--shadow-md);transform:translateY(-1px);}
+    .btn-primary:active{transform:translateY(0);box-shadow:var(--shadow-sm);}
+    .btn-outline{background:transparent;color:var(--color-primary);border:1.5px solid var(--color-primary);}
+    .btn-outline:hover{background:var(--color-primary-highlight);box-shadow:var(--shadow-sm);transform:translateY(-1px);}
+    .btn-outline:active{transform:translateY(0);}
+    #page-main{align-items:center;justify-content:center;padding:var(--space-12) var(--space-6);position:relative;z-index:1;}
+    .main-header{text-align:center;margin-bottom:var(--space-12);}
+    .main-header h1{font-family:var(--font-display);font-size:var(--text-2xl);font-weight:400;font-style:italic;color:var(--color-text);letter-spacing:.01em;}
+    .main-header .subtitle{font-size:var(--text-sm);color:var(--color-text-muted);margin-top:var(--space-2);letter-spacing:.08em;text-transform:uppercase;}
+    .header-divider{display:flex;align-items:center;gap:var(--space-4);margin:var(--space-4) auto 0;width:fit-content;}
+    .header-divider::before,.header-divider::after{content:'';width:60px;height:1px;background:var(--color-primary);opacity:.4;}
+    .header-divider-heart{color:var(--color-primary);font-size:.9rem;}
+    .cards-stack{display:flex;flex-direction:column;gap:var(--space-6);width:100%;max-width:420px;}
+    .card{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-8);display:flex;flex-direction:column;align-items:center;gap:var(--space-5);box-shadow:var(--shadow-sm);transition:box-shadow var(--transition-interactive),transform var(--transition-interactive),border-color var(--transition-interactive);}
+    .card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);border-color:var(--color-primary);}
+    .card-icon{font-size:1.8rem;line-height:1;}
+    .card-label{font-family:var(--font-display);font-size:var(--text-lg);font-weight:400;color:var(--color-text-muted);text-align:center;letter-spacing:.02em;}
+    #page-letter{align-items:center;justify-content:center;padding:var(--space-12) var(--space-6);position:relative;z-index:1;}
+    .letter-wrapper{width:100%;max-width:600px;}
+    .letter-page-title{font-family:var(--font-display);font-size:var(--text-xl);font-style:italic;font-weight:300;color:var(--color-text-muted);text-align:center;margin-bottom:var(--space-8);letter-spacing:.02em;}
+    .letter-box{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-10);box-shadow:var(--shadow-md);position:relative;}
+    .letter-box::before{content:'º6';position:absolute;top:var(--space-4);left:var(--space-5);color:var(--color-primary);opacity:.35;font-size:.75rem;}
+    .letter-box::after{content:'º6';position:absolute;bottom:var(--space-4);right:var(--space-5);color:var(--color-primary);opacity:.35;font-size:.75rem;}
+    .letter-content{font-family:var(--font-display);font-size:var(--text-lg);font-weight:300;line-height:1.9;color:var(--color-text);}
+    .letter-content .salutation{font-weight:500;margin-bottom:var(--space-6);display:block;}
+    .letter-content .body-paragraph{margin-bottom:var(--space-5);max-width:60ch;}
+    .letter-content .closing{margin-top:var(--space-8);display:block;}
+    .letter-content .signature{font-style:italic;font-size:var(--text-xl);font-weight:400;color:var(--color-primary);margin-top:var(--space-2);display:block;}
+    .letter-rule{width:80px;height:1px;background:var(--color-primary);opacity:.3;margin:var(--space-8) 0;}
+    .letter-back-btn{margin-top:var(--space-8);display:flex;justify-content:center;}
+    #page-empty{align-items:center;justify-content:center;padding:var(--space-12) var(--space-6);position:relative;z-index:1;}
+    .empty-page-content{text-align:center;display:flex;flex-direction:column;align-items:center;gap:var(--space-6);}
+    .empty-page-content h2{font-family:var(--font-display);font-size:var(--text-xl);font-style:italic;font-weight:300;color:var(--color-text-muted);}
+    .empty-page-content p{color:var(--color-text-faint);font-size:var(--text-sm);}
+    #page-gallery{align-items:center;justify-content:center;padding:var(--space-12) var(--space-6);flex-direction:column;position:relative;z-index:1;gap:var(--space-8);}
+    .gallery-header{text-align:center;}
+    .gallery-header h2{font-family:var(--font-display);font-size:var(--text-2xl);font-style:italic;font-weight:400;color:var(--color-text);}
+    .gallery-header p{color:var(--color-text-muted);font-size:var(--text-sm);margin-top:var(--space-2);}
+    .slideshow-container{width:100%;max-width:860px;position:relative;}
+    .slideshow-track-wrapper{overflow:hidden;border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);border:1px solid var(--color-border);background:var(--color-surface-2);position:relative;}
+    .slideshow-track{display:flex;width:1000%;transition:transform .9s cubic-bezier(0.16,1,0.3,1);}
+    .slide{width:10%;aspect-ratio:16/9;flex-shrink:0;position:relative;overflow:hidden;}
+    .slide img{width:100%;height:100%;object-fit:cover;display:block;}
+    .slide-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-3);background:var(--color-surface-2);border:2px dashed var(--color-border);}
+    .slide-placeholder-icon{font-size:2.5rem;opacity:.4;}
+    .slide-placeholder-label{font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;color:var(--color-text-faint);}
+    .slide-placeholder-hint{font-size:var(--text-xs);color:var(--color-text-faint);opacity:.7;text-align:center;padding:0 var(--space-6);}
+    .slide-badge{position:absolute;bottom:var(--space-4);right:var(--space-4);background:oklch(1 0 0/.85);backdrop-filter:blur(4px);color:var(--color-text-muted);font-size:var(--text-xs);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);border:1px solid var(--color-border);letter-spacing:.05em;}
+    .slideshow-dots{display:flex;justify-content:center;gap:var(--space-2);margin-top:var(--space-5);}
+    .dot{width:8px;height:8px;border-radius:var(--radius-full);background:var(--color-border);border:none;cursor:pointer;transition:background var(--transition-interactive),width var(--transition-interactive);}
+    .dot.active{background:var(--color-primary);width:24px;}
+    .slide-btn{pointer-events:all;width:44px;height:44px;border-radius:var(--radius-full);background:oklch(1 0 0/.85);backdrop-filter:blur(4px);border:1px solid var(--color-border);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;color:var(--color-text-muted);font-size:1rem;position:absolute;transition:background var(--transition-interactive),box-shadow var(--transition-interactive),transform var(--transition-interactive),color var(--transition-interactive);}
+    .slide-btn:hover{background:oklch(1 0 0/.95);box-shadow:var(--shadow-md);color:var(--color-primary);}
+    .slide-btn-prev{left:calc(-1 * var(--space-5));top:50%;transform:translateY(-50%);}
+    .slide-btn-next{right:calc(-1 * var(--space-5));top:50%;transform:translateY(-50%);}
+    .slide-btn-prev:hover,.slide-btn-next:hover{transform:translateY(-50%) scale(1.05);}
+    .slide-btn-prev:active,.slide-btn-next:active{transform:translateY(-50%) scale(0.97);}
+    .gallery-back-btn{display:flex;justify-content:center;}
+    @media(max-width:600px){.letter-box{padding:var(--space-8) var(--space-6);}.card{padding:var(--space-6);}.slide-btn-prev{left:var(--space-2);}.slide-btn-next{right:var(--space-2);}}
+  </style>
+</head>
+<body>
 
-    <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
-    <script>
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-      let kartu = document.getElementById("kartu");
-      function ubahKartu() {
-        kartu.innerHTML = `    <h1 class="font-semibold text-wrap animate__animated animate__zoomIn">
-      Selamat hari lahir najell, dari 365 hari yang ada di tahun ini hari ini salah satu yang paling aku tunggu. 
-      Hari lahirnya seseorang yang baik, ceria dan se-positive kamu. Terus bahagia hari ini dan nanti ya jell.
-    </h1>
-    <h2 class="mt-3 animate__animated animate__fadeIn">
-    
-    </h2>
-    <button
-      class="p-2 bg-slate-600 text-white rounded mt-5 hover:bg-slate-900 transition ease-in w-full animate__animated animate__delay-1s animate__tada"
-      onclick="refresh()"
-    >
-      ❤️
-    </button>
-    `;
-      }
-      function refresh() {
-        location.reload();
-      }
-    </script>
-  </body>
+<!-- PAGE 1: MAIN -->
+<main id="page-main" class="page active">
+  <div class="main-header">
+    <h1>From Me to You</h1>
+    <div class="header-divider"><span class="header-divider-heart">&#9825;</span></div>
+    <p class="subtitle">A little corner just for us</p>
+  </div>
+  <div class="cards-stack">
+    <div class="card">
+      <div class="card-icon">&#128140;</div>
+      <span class="card-label">Something I wrote<br>just for you</span>
+      <button class="btn btn-primary" onclick="navigateTo('page-letter')">A Letter for You</button>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#10024;</div>
+      <span class="card-label">Something special<br>is coming soon</span>
+      <button class="btn btn-primary" onclick="navigateTo('page-empty')">Coming Soon</button>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#127800;</div>
+      <span class="card-label">Memories we made<br>together</span>
+      <button class="btn btn-primary" onclick="navigateTo('page-gallery')">Our Gallery</button>
+    </div>
+  </div>
+</main>
+
+<!-- PAGE 2: LETTER -->
+<section id="page-letter" class="page">
+  <div class="letter-wrapper">
+    <p class="letter-page-title">A letter for you &#10022;</p>
+    <div class="letter-box">
+      <div class="letter-content">
+        <span class="salutation">My dearest,</span>
+        <p class="body-paragraph">There are things that words can barely hold &mdash; but I want to try. Every time I think of you, something warm settles in my chest, like sunlight finding its way through a window on a quiet morning.</p>
+        <p class="body-paragraph">I wrote this not because I had to, but because you deserve to know how much you mean to me. In every small moment and every ordinary day, you make the world softer somehow.</p>
+        <p class="body-paragraph">Thank you for being exactly who you are. For your laugh, your patience, your kindness &mdash; and even the way you tilt your head when you&rsquo;re thinking. I notice it all.</p>
+        <div class="letter-rule"></div>
+        <p class="body-paragraph">I hope whenever you read this, it finds you smiling. And I hope you know &mdash; always &mdash; that you are so very loved.</p>
+        <span class="closing">With all my heart,</span>
+        <span class="signature">Me &#9825;</span>
+      </div>
+    </div>
+    <div class="letter-back-btn">
+      <button class="btn btn-outline" onclick="navigateTo('page-main')">&#8592; Back to Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 3: EMPTY -->
+<section id="page-empty" class="page">
+  <div class="empty-page-content">
+    <div style="font-size:3rem">&#10024;</div>
+    <h2>Something is on its way&hellip;</h2>
+    <p>This page is still being filled with love. Check back soon.</p>
+    <button class="btn btn-outline" onclick="navigateTo('page-main')">&#8592; Back to Home</button>
+  </div>
+</section>
+
+<!-- PAGE 4: GALLERY -->
+<section id="page-gallery" class="page">
+  <div class="gallery-header">
+    <h2>Our Gallery</h2>
+    <p>Ten memories, slowly unfolding &#9825;</p>
+  </div>
+  <div class="slideshow-container">
+    <div class="slideshow-track-wrapper">
+      <div class="slideshow-track" id="slideshow-track">
+
+        <!-- SLIDE 1 — replace slide-placeholder with <img src="./photos/photo1.jpg" ...> -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#127800;</div>
+            <div class="slide-placeholder-label">Photo 1</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo1.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">1 / 10</div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#128149;</div>
+            <div class="slide-placeholder-label">Photo 2</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo2.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">2 / 10</div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#10024;</div>
+            <div class="slide-placeholder-label">Photo 3</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo3.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">3 / 10</div>
+        </div>
+
+        <!-- SLIDE 4 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#127769;</div>
+            <div class="slide-placeholder-label">Photo 4</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo4.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">4 / 10</div>
+        </div>
+
+        <!-- SLIDE 5 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#127799;</div>
+            <div class="slide-placeholder-label">Photo 5</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo5.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">5 / 10</div>
+        </div>
+
+        <!-- SLIDE 6 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#127749;</div>
+            <div class="slide-placeholder-label">Photo 6</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo6.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">6 / 10</div>
+        </div>
+
+        <!-- SLIDE 7 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#127872;</div>
+            <div class="slide-placeholder-label">Photo 7</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo7.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">7 / 10</div>
+        </div>
+
+        <!-- SLIDE 8 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#129704;</div>
+            <div class="slide-placeholder-label">Photo 8</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo8.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">8 / 10</div>
+        </div>
+
+        <!-- SLIDE 9 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#127800;</div>
+            <div class="slide-placeholder-label">Photo 9</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo9.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">9 / 10</div>
+        </div>
+
+        <!-- SLIDE 10 -->
+        <div class="slide">
+          <div class="slide-placeholder">
+            <div class="slide-placeholder-icon">&#128151;</div>
+            <div class="slide-placeholder-label">Photo 10</div>
+            <div class="slide-placeholder-hint">Replace with: &lt;img src="./photos/photo10.jpg"&gt;</div>
+          </div>
+          <div class="slide-badge">10 / 10</div>
+        </div>
+
+      </div>
+      <button class="slide-btn slide-btn-prev" id="btn-prev" aria-label="Previous slide">&#8592;</button>
+      <button class="slide-btn slide-btn-next" id="btn-next" aria-label="Next slide">&#8594;</button>
+    </div>
+    <div class="slideshow-dots" id="slideshow-dots"></div>
+  </div>
+  <div class="gallery-back-btn">
+    <button class="btn btn-outline" onclick="navigateTo('page-main')">&#8592; Back to Home</button>
+  </div>
+</section>
+
+<script>
+  function navigateTo(targetId) {
+    const cur = document.querySelector('.page.active');
+    const tgt = document.getElementById(targetId);
+    if (!tgt || cur === tgt) return;
+    cur.classList.remove('visible');
+    setTimeout(() => {
+      cur.classList.remove('active');
+      tgt.classList.add('active');
+      requestAnimationFrame(() => requestAnimationFrame(() => tgt.classList.add('visible')));
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }, 350);
+  }
+  requestAnimationFrame(() => requestAnimationFrame(() =>
+    document.getElementById('page-main').classList.add('visible')));
+
+  const TOTAL = 10, DELAY = 3500;
+  let cur = 0, timer = null;
+  const track = document.getElementById('slideshow-track');
+  const dotsEl = document.getElementById('slideshow-dots');
+
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('button');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    d.addEventListener('click', () => { goTo(i); reset(); });
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(i) {
+    cur = (i + TOTAL) % TOTAL;
+    track.style.transform = 'translateX(' + -(cur * 10) + '%)';
+    document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('active', j === cur));
+  }
+  function reset() { clearInterval(timer); timer = setInterval(() => goTo(cur + 1), DELAY); }
+
+  document.getElementById('btn-next').addEventListener('click', () => { goTo(cur + 1); reset(); });
+  document.getElementById('btn-prev').addEventListener('click', () => { goTo(cur - 1); reset(); });
+
+  const wrapper = document.querySelector('.slideshow-track-wrapper');
+  wrapper.addEventListener('mouseenter', () => clearInterval(timer));
+  wrapper.addEventListener('mouseleave', reset);
+
+  let tx = 0;
+  wrapper.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
+  wrapper.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) { dx < 0 ? goTo(cur + 1) : goTo(cur - 1); reset(); }
+  }, { passive: true });
+
+  reset();
+</script>
+</body>
 </html>
