@@ -8,6 +8,36 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    #page-empty {
+  background: #000000;
+}
+
+#page-empty .empty-page-content h2 {
+  color: var(--color-primary);
+}
+
+#page-empty .empty-page-content p {
+  color: #f3a8bb;
+}
+
+#page-empty .btn-outline {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+#page-empty .btn-outline:hover {
+  background: rgba(214, 77, 114, 0.14);
+}
+
+.moon-image {
+  width: 150px;
+  aspect-ratio: 1 / 1;
+  border-radius: 24px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  box-shadow: 0 12px 30px rgba(214, 77, 114, 0.18);
+}
     :root {
       --font-display: 'Cormorant Garamond', Georgia, serif;
       --font-body: 'DM Sans', 'Helvetica Neue', sans-serif;
@@ -44,7 +74,7 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth;text-rendering:optimizeLegibility;}
-    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background-color:var(--color-bg);line-height:1.6;}
+    body{min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background-color:var(--color-bg);line-height:1.6;transition:background-color 0.6s ease;}
     img{display:block;max-width:100%;height:auto;}
     button{cursor:pointer;background:none;border:none;font:inherit;color:inherit;}
     h1,h2,h3{text-wrap:balance;line-height:1.15;}
@@ -170,7 +200,7 @@
 <!-- PAGE 3: EMPTY -->
 <section id="page-empty" class="page">
   <div class="empty-page-content">
-    <div style="font-size: 3rem;">&#10024;</div>
+    <img src="./picture/moon.jpeg" alt="Moon" class="moon-image">
     <h2>Puisi ini tentang kamu, temanya sesuai dengan fase bulan tanggal 1 Agustus 2008 waktu kamu lahir.&hellip;</h2>
     <p class = "body-paragraph">The moon wears night like a quiet crown, <br>
 A silver soul in the blackest sky. <br>
@@ -288,18 +318,28 @@ That some things in this world are simply priceless.</p>
 </section>
 
 <script>
-  function navigateTo(targetId) {
-    const cur = document.querySelector('.page.active');
-    const tgt = document.getElementById(targetId);
-    if (!tgt || cur === tgt) return;
-    cur.classList.remove('visible');
-    setTimeout(() => {
-      cur.classList.remove('active');
-      tgt.classList.add('active');
-      requestAnimationFrame(() => requestAnimationFrame(() => tgt.classList.add('visible')));
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }, 350);
-  }
+  const pageBg = {
+  'page-main': '#fff8f9',
+  'page-letter': '#fff8f9',
+  'page-empty': '#000000',
+  'page-gallery': '#fff8f9'
+};
+
+function navigateTo(targetId) {
+  const cur = document.querySelector('.page.active');
+  const tgt = document.getElementById(targetId);
+  if (!tgt || cur === tgt) return;
+
+  cur.classList.remove('visible');
+  document.body.style.backgroundColor = pageBg[targetId] || '#fff8f9';
+
+  setTimeout(() => {
+    cur.classList.remove('active');
+    tgt.classList.add('active');
+    requestAnimationFrame(() => requestAnimationFrame(() => tgt.classList.add('visible')));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, 350);
+}
   requestAnimationFrame(() => requestAnimationFrame(() =>
     document.getElementById('page-main').classList.add('visible')));
 
