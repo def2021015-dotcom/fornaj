@@ -143,6 +143,7 @@
     .slide-btn-next{right:calc(-1 * var(--space-5));top:50%;transform:translateY(-50%);}
     .slide-btn-prev:hover,.slide-btn-next:hover{transform:translateY(-50%) scale(1.05);}
     .slide-btn-prev:active,.slide-btn-next:active{transform:translateY(-50%) scale(0.97);}
+    .slide-caption{margin-top:var(--space-5);text-align:center;font-family:var(--font-display);font-size:var(--text-lg);font-style:italic;color:var(--color-text-muted);max-width:70ch;margin-left:auto;margin-right:auto;min-height:1.6em;}
     .gallery-back-btn{display:flex;justify-content:center;}
     @media(max-width:600px){.letter-box{padding:var(--space-8) var(--space-6);}.card{padding:var(--space-6);}.slide-btn-prev{left:var(--space-2);}.slide-btn-next{right:var(--space-2);}}
   </style>
@@ -390,6 +391,7 @@ That some things in this world are simply priceless.</p>
       <button class="slide-btn slide-btn-next" id="btn-next" aria-label="Next slide">&#8594;</button>
     </div>
     <div class="slideshow-dots" id="slideshow-dots"></div>
+    <p class="slide-caption" id="slide-caption"></p>
   </div>
   <div class="gallery-back-btn">
     <button class="btn btn-outline" onclick="navigateTo('page-main')">&#8592; Thank youu!!</button>
@@ -422,16 +424,41 @@ function navigateTo(targetId) {
   requestAnimationFrame(() => requestAnimationFrame(() =>
     document.getElementById('page-main').classList.add('visible')));
 
-  const TOTAL = 21, DELAY = 3500;
-  let cur = 0, timer = null;
+  const TOTAL = 21;
+  let cur = 0;
   const track = document.getElementById('slideshow-track');
   const dotsEl = document.getElementById('slideshow-dots');
+  const captionEl = document.getElementById('slide-caption');
+
+  const captions = [
+    "Our first ever fotbar (ITB banget wkwkwk)",
+    "Najell, kita jadi ikut mun gaa?",
+    "Ini aja, agak blur tapi lucu",
+    "Kamu berangkat kondangan jam berapa?",
+    "Pii, besok lari pagi yuk ke UI",
+    "Rangga dan Cinta Harjamukti",
+    "Nanti naik TJ, turun di Setiabudi",
+    "Foto outfitnya pi",
+    "Buku kita foto jel",
+    "Jell foto yukk",
+    "Jell coba selfie ",
+    "Kita udah nyampe, kalian di mana?",
+    "Photobooth yok se-circle",
+    "Pi, foto yuk di depan",
+    "Jel kamu suka kebab gaa?",
+    "Ell, tolong fotoin dong",
+    "Nanti aja belajarnya bareng akuu",
+    "Btw pii, besok mau matching outfit gaa?",
+    "Coba mirror selfie jell",
+    "Coba filter webcam ini pii",
+    "Jell nanti liburan ke perpus ini yukk"
+  ];
 
   for (let i = 0; i < TOTAL; i++) {
     const d = document.createElement('button');
     d.className = 'dot' + (i === 0 ? ' active' : '');
     d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-    d.addEventListener('click', () => { goTo(i); reset(); });
+    d.addEventListener('click', () => { goTo(i); });
     dotsEl.appendChild(d);
   }
 
@@ -439,24 +466,21 @@ function navigateTo(targetId) {
     cur = (i + TOTAL) % TOTAL;
     track.style.transform = 'translateX(' + -(cur * 10) + '%)';
     document.querySelectorAll('.dot').forEach((d, j) => d.classList.toggle('active', j === cur));
+    if (captionEl) captionEl.textContent = captions[cur] || '';
   }
-  function reset() { clearInterval(timer); timer = setInterval(() => goTo(cur + 1), DELAY); }
 
-  document.getElementById('btn-next').addEventListener('click', () => { goTo(cur + 1); reset(); });
-  document.getElementById('btn-prev').addEventListener('click', () => { goTo(cur - 1); reset(); });
-
-  const wrapper = document.querySelector('.slideshow-track-wrapper');
-  wrapper.addEventListener('mouseenter', () => clearInterval(timer));
-  wrapper.addEventListener('mouseleave', reset);
+  document.getElementById('btn-next').addEventListener('click', () => { goTo(cur + 1); });
+  document.getElementById('btn-prev').addEventListener('click', () => { goTo(cur - 1); });
 
   let tx = 0;
+  const wrapper = document.querySelector('.slideshow-track-wrapper');
   wrapper.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
   wrapper.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - tx;
-    if (Math.abs(dx) > 40) { dx < 0 ? goTo(cur + 1) : goTo(cur - 1); reset(); }
+    if (Math.abs(dx) > 40) { dx < 0 ? goTo(cur + 1) : goTo(cur - 1); }
   }, { passive: true });
 
-  reset();
+  goTo(0);
 </script>
 </body>
 </html>
